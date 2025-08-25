@@ -1,1 +1,4 @@
 venv/
+uploads/
+characters.json
+__pycache__/
