@@ -1,35 +1,20 @@
 import flet as ft
 
-from flet_interface.pages.page_settings import go_to_settings_page
-from flet_interface.pages.page_cards import go_to_cards_page
+from flet_interface.utils.on_hover import on_button_hover
 
-def go_to_main_menu(page):
+def go_to_main_menu(page, go_to_page):
     '''
         This function builds the main menu, that consists of:
         - A Title;
         - Several buttons.
     '''
-    def on_button_hover(e):
-        '''
-            This is a hover function that changes button appearance.
-        '''
-        if e.data == "true":
-            # Background color.
-            e.control.bgcolor = page.button_settings["bg_color_alt"]
-            # Text color.
-            e.control.content.color = page.button_settings["text_color_alt"]
-        else:
-            # Background color.
-            e.control.bgcolor = page.button_settings["bg_color"]
-            # Text color.
-            e.control.content.color = page.button_settings["text_color"]
-        e.control.update()
+    page.header.content = ft.Container()
 
     title = ft.Container(
         content=ft.Text(
             value="RP With Me",
-            color=page.header_settings["text_color_alt"],
-            size=page.header_settings["text_size"],
+            color=page.logo_settings["text_color_alt"],
+            size=page.logo_settings["text_size"],
         ),
         # bgcolor=ft.Colors.AMBER_200,
     )
@@ -47,8 +32,8 @@ def go_to_main_menu(page):
         bgcolor=page.button_settings["bg_color"],
         alignment=ft.alignment.center,
 
-        on_hover=on_button_hover,
-        on_click=lambda e: go_to_cards_page(page)
+        on_hover=lambda e: on_button_hover(e, page),
+        on_click=lambda e: go_to_page(page, go_to_page, 1),
     )
 
     settings_button = ft.Container(
@@ -64,8 +49,8 @@ def go_to_main_menu(page):
         bgcolor=page.button_settings["bg_color"],
         alignment=ft.alignment.center,
 
-        on_hover=on_button_hover,
-        on_click=lambda e: go_to_settings_page(page),
+        on_hover=lambda e: on_button_hover(e, page),
+        on_click=lambda e: go_to_page(page, go_to_page, 2),
     )
 
     menu_controls = [

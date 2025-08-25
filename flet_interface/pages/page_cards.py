@@ -1,61 +1,34 @@
 import flet as ft
 
-def go_to_cards_page(page):
-    def on_button_hover(e):
-        '''
-            This is a hover function that changes button appearance.
-        '''
-        if e.data == "true":
-            # Background color.
-            e.control.bgcolor = page.button_settings["bg_color_alt"]
-            # Text color.
-            e.control.content.color = page.button_settings["text_color_alt"]
-        else:
-            # Background color.
-            e.control.bgcolor = page.button_settings["bg_color"]
-            # Text color.
-            e.control.content.color = page.button_settings["text_color"]
-        e.control.update()
+from flet_interface.utils.back_button import make_go_back_button
+from flet_interface.utils.header import make_header
+from flet_interface.utils.make_cards_list import make_cards_list
 
-    print("Hello from cards page")
-    print(page.page_content)
+def go_to_cards_page(page, go_to_page):
+    go_back_button = make_go_back_button(page, go_to_page, 0)
+    header_text = "Cards page"
 
-    go_back_button = ft.Container(
-        content=ft.Text(
-            value="Go Back",
-            size=page.button_settings["text_size"],
-            color=page.button_settings["text_color"],
+    cards_list = ft.Container(
+        content=ft.Row(
+            controls=make_cards_list(page, go_to_page),
+            alignment=ft.MainAxisAlignment.CENTER,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER
         ),
-        height=page.button_settings["height"],
-        width=page.button_settings["width"],
-
-        border_radius=16,
-        bgcolor=page.button_settings["bg_color"],
-        alignment=ft.alignment.center,
-
-        on_hover=on_button_hover,
-        # on_click=lambda e: go_to_cards_page(page)
-    )
-
-    header = ft.Row(
-        controls=[
-            ft.Text(
-                value="Cards page"
-            ),
-            go_back_button,
-        ],
-        alignment=ft.MainAxisAlignment.CENTER,
+        bgcolor=ft.Colors.AMBER_200,
     )
 
     page_cards_controls = [
-        header,
+        cards_list,
     ]
 
     page_cards = ft.Column(
         controls=page_cards_controls,
         alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
     )
 
+    page.header.content = make_header(page, header_text, go_back_button)
     page.page_content.content = page_cards
+    page.footer.content = ft.Container()
+
     page.update()
